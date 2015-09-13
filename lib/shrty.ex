@@ -11,6 +11,7 @@ defmodule Shrty do
       supervisor(Shrty.Endpoint, []),
       # Start the Ecto repository
       worker(Shrty.Repo, []),
+      worker(Shrty.Shortener, [[name: Shrty.Shortener]])
       # Here you could define other workers and supervisors as children
       # worker(Shrty.Worker, [arg1, arg2, arg3]),
     ]

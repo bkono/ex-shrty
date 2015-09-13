@@ -34,6 +34,9 @@ defmodule Shrty.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:mix_test_watch, "~> 0.2", only: :dev},
+     {:hashids, "~> 2.0"}
+   ]
   end
 end
