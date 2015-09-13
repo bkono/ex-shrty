@@ -36,6 +36,7 @@ defmodule Shrty.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:mix_test_watch, "~> 0.2", only: :dev},
+     {:shouldi, only: :test},
      {:hashids, "~> 2.0"}
    ]
   end
