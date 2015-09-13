@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Shrty.Shortener.State do
   defstruct id: 0, urls: %{}
 end
@@ -37,9 +39,11 @@ defmodule Shrty.Shortener do
   end
 
   def shrink(state, url) do
+    Logger.info "Shrinking url: [ #{url} ]"
     state = %{state | id: state.id + 1}
     token = Hashids.encode(@coder, state.id)
     urls = Map.put(state.urls, token, url)
+    Logger.info "... associated token: [ #{token} ] to [ #{url} ]"
     {%{state | urls: urls}, token}
   end
 
