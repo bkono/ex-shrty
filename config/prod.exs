@@ -2,7 +2,7 @@ use Mix.Config
 
 config :shrty, Shrty.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "young-hamlet-8505.herokuapp.com", port: 443],
+  url: [scheme: "https", host: System.get_env("HOSTNAME"), port: 80],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/manifest.json"
 
