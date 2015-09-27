@@ -40,9 +40,17 @@ defmodule Shrty.Shortener do
     {:reply, expand(state, token), state}
   end
 
-  defp shrink(state, url) do
+  defp shrink(%{id: 0}, url) do
+    Amnesia.transaction do
+      case ShrtUrl.last do
+        :badarg -> shrink(%{id: 1}, url)
+        %ShrtUrl{id: next_id} -> shrink(%{id: next_id}, url)
+      end
+    end
+  end
+
+  defp shrink(%{id: next_id}, url) do
     Logger.info "Shrinking url: [ #{url} ]"
-    %{id: next_id} = state
     token = Hashids.encode(@coder, next_id)
     Amnesia.transaction do
       %ShrtUrl{url: url, hashid: token} |> ShrtUrl.write
