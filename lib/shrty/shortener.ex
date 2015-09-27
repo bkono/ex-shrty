@@ -1,12 +1,14 @@
 require Logger
 
 defmodule Shrty.Shortener.State do
-  defstruct id: 0, urls: %{}
+  defstruct id: 0
 end
 
 defmodule Shrty.Shortener do
   use GenServer
   alias Shrty.Shortener.State
+  use Amnesia
+  use Shrty.Database
 
   @name __MODULE__
   @coder Hashids.new([salt: Application.get_env(:shrty, :hashids_salt), min_len: 2])
@@ -38,14 +40,23 @@ defmodule Shrty.Shortener do
     {:reply, expand(state, token), state}
   end
 
-  def shrink(state, url) do
+  defp shrink(state, url) do
     Logger.info "Shrinking url: [ #{url} ]"
-    state = %{state | id: state.id + 1}
-    token = Hashids.encode(@coder, state.id)
-    urls = Map.put(state.urls, token, url)
-    Logger.info "... associated token: [ #{token} ] to [ #{url} ]"
-    {%{state | urls: urls}, token}
+    %{id: next_id} = state
+    token = Hashids.encode(@coder, next_id)
+    Amnesia.transaction do
+      %ShrtUrl{url: url, hashid: token} |> ShrtUrl.write
+      Logger.info "... associated token: [ #{token} ] to [ #{url} ]"
+      {%{id: next_id + 1}, token}
+    end
   end
 
-  def expand(state, token), do: Map.get(state.urls, token)
+  defp expand(_state, token) do
+    Amnesia.transaction do
+      case ShrtUrl.where(hashid == token) |> Amnesia.Selection.values do
+        [%{url: url}] -> url
+        [] -> nil
+      end
+    end
+  end
 end

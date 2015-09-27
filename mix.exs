@@ -37,7 +37,8 @@ defmodule Shrty.Mixfile do
      {:cowboy, "~> 1.0"},
      {:mix_test_watch, "~> 0.2", only: :dev},
      {:shouldi, only: :test},
-     {:hashids, "~> 2.0"}
+     {:hashids, "~> 2.0"},
+     {:amnesia, "~> 0.2"}
    ]
   end
 end
