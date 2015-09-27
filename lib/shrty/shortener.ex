@@ -51,11 +51,17 @@ defmodule Shrty.Shortener do
 
   defp shrink(%{id: next_id}, url) do
     Logger.info "Shrinking url: [ #{url} ]"
-    token = Hashids.encode(@coder, next_id)
     Amnesia.transaction do
-      %ShrtUrl{url: url, hashid: token} |> ShrtUrl.write
-      Logger.info "... associated token: [ #{token} ] to [ #{url} ]"
-      {%{id: next_id + 1}, token}
+      query = ShrtUrl.where(:url == url) |> Amnesia.Selection.values
+      case query do
+        [] ->
+          token = Hashids.encode(@coder, next_id)
+          %ShrtUrl{url: url, hashid: token} |> ShrtUrl.write
+          Logger.info "... associated token: [ #{token} ] to [ #{url} ]"
+          {%{id: next_id + 1}, token}
+        [%ShrtUrl{hashid: token}] -> {%{id: next_id}, token}
+        [head = %ShrtUrl{hashid: token} | tail] -> {%{id: next_id}, token}
+      end
     end
   end
 
