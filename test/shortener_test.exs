@@ -23,4 +23,11 @@ defmodule Shrty.ShortenerTest do
     decoded_url = Shortener.expand(token)
     assert decoded_url == @long_url
   end
+
+  test "returns the same token when shrinking the same url multiple times" do
+    token1 = Shortener.shrink(@long_url)
+    token2 = Shortener.shrink(@long_url)
+
+    assert token1 == token2
+  end
 end
