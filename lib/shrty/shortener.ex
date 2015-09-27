@@ -60,7 +60,7 @@ defmodule Shrty.Shortener do
           Logger.info "... associated token: [ #{token} ] to [ #{url_to_shrink} ]"
           {%{id: next_id + 1}, token}
         [%ShrtUrl{hashid: token}] -> {%{id: next_id}, token}
-        [head = %ShrtUrl{hashid: token} | tail] -> {%{id: next_id}, token}
+        [_head = %ShrtUrl{hashid: token} | _tail] -> {%{id: next_id}, token}
       end
     end
   end

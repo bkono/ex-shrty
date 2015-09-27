@@ -31,10 +31,7 @@ defmodule Mix.Tasks.Shrty do
         Database.wait(3000)
 
         Amnesia.transaction do
-          first = %ShrtUrl{url: "https://github.com/bkono/shrty", hashid: "_"} |> ShrtUrl.write
-          
-
-          # ... initial data creation
+          _first = %ShrtUrl{url: "https://github.com/bkono/shrty", hashid: "_"} |> ShrtUrl.write
         end
 
         # Stop mnesia so it can flush everything and keep the data sane.
