@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Shrty do
         Database.create(disk: [node])
 
         # This waits for the database to be fully created.
-        Database.wait
+        Database.wait(3000)
 
         Amnesia.transaction do
           first = %ShrtUrl{url: "https://github.com/bkono/shrty", hashid: "_"} |> ShrtUrl.write

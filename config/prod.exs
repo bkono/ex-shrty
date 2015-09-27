@@ -18,3 +18,5 @@ config :shrty, Shrty.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: 20
+
+config :shrty, mnesia_dir: System.get_env("MNESIA_DIR")

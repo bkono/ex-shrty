@@ -5,6 +5,7 @@ defmodule Shrty do
   # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
+    :application.set_env(:mnesia, :dir, mnesia_dir)
     Amnesia.start
 
     children = [
@@ -28,5 +29,9 @@ defmodule Shrty do
   def config_change(changed, _new, removed) do
     Shrty.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  def mnesia_dir do
+    String.to_atom Application.get_env(:shrty, :mnesia_dir)
   end
 end

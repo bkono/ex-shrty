@@ -20,3 +20,5 @@ config :shrty, Shrty.Repo,
   database: "shrty_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :shrty, mnesia_dir: "./db/test"

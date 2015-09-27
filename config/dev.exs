@@ -40,3 +40,5 @@ config :shrty, Shrty.Repo,
   database: "shrty_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :shrty, mnesia_dir: "./db/dev"
