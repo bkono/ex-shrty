@@ -13,7 +13,6 @@ defmodule Mix.Tasks.Shrty do
         # starting mnesia itself, the schema gets stored on disk based on the
         # `-mnesia` config, so you don't really need to create it every time.
         IO.puts "loading up Amnesia"
-        :application.set_env(:mnesia, :dir, Shrty.mnesia_dir)
         Amnesia.Schema.create
 
         # Once the schema has been created, you can start mnesia.
@@ -50,7 +49,6 @@ defmodule Mix.Tasks.Shrty do
       """
       def run(_) do
         # Start mnesia, or we can't do much.
-        :application.set_env(:mnesia, :dir, Shrty.mnesia_dir)
         Amnesia.start
 
         # Destroy the database.
