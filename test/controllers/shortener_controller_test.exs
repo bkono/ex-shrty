@@ -48,22 +48,15 @@ defmodule Shrty.ShortenerControllerTest do
     assert conn.status == 404
   end
 
-#   test "lists all entries on index", %{conn: conn} do
-#     conn = get conn, short_url_path(conn, :index)
-#     assert json_response(conn, 200)["data"] == []
-#   end
-#
-#   test "shows chosen resource", %{conn: conn} do
-#     short_url = Repo.insert! %ShortUrl{}
-#     conn = get conn, short_url_path(conn, :show, short_url)
-#     assert json_response(conn, 200)["data"] == %{"id" => short_url.id,
-#       "name" => short_url.name}
-#   end
-#
-#   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
-#     assert_raise Ecto.NoResultsError, fn ->
-#       get conn, short_url_path(conn, :show, -1)
-#     end
-#   end
-#
+  test "provides views count at the metrics endpoint" do
+    conn = get conn, "/shrtn", url: "metrics_test_url"
+    token = json_response(conn, 200)["data"]["token"]
+    get conn, "/#{token}"
+
+    conn = get conn, "/metrics/#{token}"
+    result = json_response(conn, 200)["data"]
+    assert result["token"] == token
+    assert result["url"] == "metrics_test_url"
+    assert result["views"] == 1
+  end
 end

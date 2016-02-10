@@ -22,6 +22,7 @@ defmodule Shrty.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/:token", ShortenerController, :show
+    get "/metrics/:token", ShortenerController, :metrics
     get "/", PageController, :index
   end
 

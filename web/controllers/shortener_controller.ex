@@ -11,6 +11,18 @@ defmodule Shrty.ShortenerController do
     redirect_to_url(conn, token, Shrty.Shortener.expand(token))
   end
 
+  def metrics(conn, %{"token" => token}) do
+    case Shrty.Shortener.fetch(token) do
+      {:ok, shrturl} ->
+        conn
+        |> json %{data: %{token: shrturl.hashid, url: shrturl.url, views: shrturl.views}}
+      {:error, :not_found} ->
+        conn
+        |> put_status(:not_found)
+        |> render(Shrty.ErrorView, "404.html")
+    end
+  end
+
   defp redirect_to_url(conn, _token, nil) do
     conn
     |> put_status(:not_found)

@@ -26,6 +26,15 @@ defmodule Shrty.Shortener do
     GenServer.call(@name, {:expand, token})
   end
 
+  def fetch(token) do
+    Amnesia.transaction do
+      case ShrtUrl.where(hashid == token) |> Amnesia.Selection.values do
+        [%ShrtUrl{} = shrturl] -> {:ok, shrturl}
+        [] -> {:error, :not_found} 
+      end
+    end
+  end
+
   # Server
   def init(_args) do
     {:ok, %State{}}
