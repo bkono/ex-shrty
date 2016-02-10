@@ -19,4 +19,5 @@ config :shrty, Shrty.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: 20
 
-config :shrty, mnesia_dir: System.get_env("MNESIA_DIR")
+config :mnesia, dir: :"#{System.get_env("MNESIA_DIR")}"
+# config :shrty, mnesia_dir: System.get_env("MNESIA_DIR")

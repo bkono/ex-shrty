@@ -1,5 +1,6 @@
 defmodule Shrty.ShortenerControllerTest do
   use Shrty.ConnCase
+  use Shrty.Database
 
   @test_url "https://github.com/bkono/dotfiles"
 

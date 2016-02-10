@@ -56,7 +56,7 @@ defmodule Shrty.Shortener do
       case query do
         [] ->
           token = Hashids.encode(@coder, next_id)
-          %ShrtUrl{url: url_to_shrink, hashid: token} |> ShrtUrl.write
+          %ShrtUrl{url: url_to_shrink, hashid: token, views: 0} |> ShrtUrl.write
           Logger.info "... associated token: [ #{token} ] to [ #{url_to_shrink} ]"
           {%{id: next_id + 1}, token}
         [%ShrtUrl{hashid: token}] -> {%{id: next_id}, token}
@@ -68,7 +68,9 @@ defmodule Shrty.Shortener do
   defp expand(_state, token) do
     Amnesia.transaction do
       case ShrtUrl.where(hashid == token) |> Amnesia.Selection.values do
-        [%{url: url}] -> url
+        [%ShrtUrl{} = shrturl] ->
+          shrturl |> ShrtUrl.viewed!
+          shrturl.url
         [] -> nil
       end
     end

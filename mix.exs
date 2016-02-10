@@ -18,7 +18,7 @@ defmodule Shrty.Mixfile do
   def application do
     [mod: {Shrty, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :amnesia]]
   end
 
   # Specifies which paths to compile per environment
